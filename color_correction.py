@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 IMAGES_FOLDER = "images"
 OUTPUT_FOLDER = "result"
@@ -8,10 +9,8 @@ current_exercise = 3
 # Ex. 1 -- Dimming
 if current_exercise == 1:
     guc_img = cv2.imread("{}/GUC.png".format(IMAGES_FOLDER), 0)
-    for i in range(len(guc_img)):
-        for j in range(len(guc_img[i])):
-            guc_img[i][j] = max(0, guc_img[i][j] - 70)
-    cv2.imwrite("{}/GUC.png".format(OUTPUT_FOLDER), guc_img)
+    dimmed = np.clip(guc_img, 70, 255) - 70
+    cv2.imwrite("{}/GUC.png".format(OUTPUT_FOLDER), dimmed)
 
 # Ex. 2 -- Shadow Removal
 if current_exercise == 2:
@@ -32,14 +31,5 @@ if current_exercise == 2:
 # Ex. 3 -- Partial brightening
 if current_exercise == 3:
     cameraman_img = cv2.imread("{}/cameraman.png".format(IMAGES_FOLDER), 0)
-    for i in range(len(cameraman_img)):
-        for j in range(len(cameraman_img[i])):
-            if cameraman_img[i][j] < 70:
-                cameraman_img[i][j] += 50
-
-    cv2.imwrite("{}/cameraman2.png".format(OUTPUT_FOLDER), cameraman_img)
-
-
-
-
-
+    cameraman_img = np.array([[col + 50 if col < 70 else col for col in row] for row in cameraman_img])
+    cv2.imwrite("{}/cameraman.png".format(OUTPUT_FOLDER), cameraman_img)

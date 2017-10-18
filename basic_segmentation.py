@@ -10,13 +10,13 @@ res_img = np.empty_like(lake_img)
 for i in range(len(lake_img)):
     for j in range(len(lake_img[i])):
         # construct a 3x3 mask
-        startRow = max(0, i - 1)
-        endRow = min(len(lake_img), i + 1)
-        startCol = max(0, j - 1)
-        endCol = min(len(lake_img[i]), j + 1)
+        start_row = max(0, i - 1)
+        end_row = min(len(lake_img), i + 1)
+        start_col = max(0, j - 1)
+        end_col = min(len(lake_img[i]), j + 1)
 
         # Get the variance at the current pixel with this mask
-        variance = np.var(lake_img[startRow: endRow, startCol: endCol])
+        variance = np.var(lake_img[start_row: end_row, start_col: end_col])
 
         # Smooth lake will likely have low variance < 30
         # Keep ducks with color > 200

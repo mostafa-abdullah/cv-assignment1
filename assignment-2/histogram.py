@@ -2,16 +2,15 @@ import cv2
 import numpy as np
 
 IMAGES_FOLDER = "images"
-OUTPUT_FOLDER = "result"
+OUTPUT_FOLDER = "result/original_hist"
 
 
-def get_histogram(image_path):
+def get_histogram(img):
     """
     Construct the histogram of an image
-    :param image_path: the path to the image file
+    :param img: the image to get the histogram of
     :return: the histogram as a frequence array of length 256
     """
-    img = cv2.imread(image_path, 0)
     histogram = np.zeros(256, int)
     for i in range(len(img)):
         for j in range(len(img[i])):
@@ -43,25 +42,30 @@ def add_vals(plot, arr, inten):
             plot[511 - j][i * 4 + 1] += inten
 
 
-def plot_data(f, img_file):
+def plot_data(img, out_path):
     """
-    Plot histogram and cumulative histogram
-    :param f: The histogram
-    :param img_file: The name of the image file
+    Plot histogram and cumulative histogram of a given image
+    :param img_file: The path to the image file
+    :param out_file: The name to the output file
     :return: None
     """
+    f = get_histogram(img)
     cum_f = get_cumulative(f)
     plot = np.zeros((512, 1024))
     add_vals(plot, f, 80)
     add_vals(plot, cum_f, 120)
-    cv2.imwrite("{}/{}".format(OUTPUT_FOLDER, img_file), plot)
+    cv2.imwrite(out_path, plot)
 
 
-def solve_for_image(img_file):
-    hist = get_histogram("{}/{}".format(IMAGES_FOLDER, img_file))
-    plot_data(hist, img_file)
+def original_path(name):
+    return "{}/{}.png".format(IMAGES_FOLDER, name)
 
-solve_for_image("cameraman.png")
-solve_for_image("bat.png")
-solve_for_image("fog.png")
-solve_for_image("fognoise.png")
+
+def original_out_path(name):
+    return "{}/{}.png".format(OUTPUT_FOLDER, name)
+
+if __name__ == '__main__':
+    plot_data(cv2.imread(original_path("cameraman"), 0), original_out_path("cameraman"))
+    plot_data(cv2.imread(original_path("bat"), 0), original_out_path("bat"))
+    plot_data(cv2.imread(original_path("fog"), 0), original_out_path("fog"))
+    plot_data(cv2.imread(original_path("fognoise"), 0), original_out_path("fognoise"))

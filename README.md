@@ -13,3 +13,6 @@ Computer Vision Assignments
 - Contrast Stretching
 - Histogram Equalization
 
+### Assignment 3:
+- Anaglyph Image Generation
+- Disparity Estimation with SAD
